@@ -190,9 +190,9 @@ CSS = r"""
   --it-g:#1f8a4c;--it-r:#c73a2f;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-body{margin:0;background:var(--parchment);color:var(--ink);font:400 17px/1.62 Inter,system-ui,-apple-system,Segoe UI,sans-serif;overflow-x:hidden}
+body{margin:0;background:var(--parchment);color:var(--ink);font:400 17px/1.62 Inter,system-ui,-apple-system,Segoe UI,sans-serif;overflow-x:clip}
 img{max-width:100%;height:auto;display:block}
 a{color:var(--cognac-d)}
 h1,h2,h3{font-family:Oswald,Impact,"Arial Narrow",sans-serif;font-weight:700;line-height:1.08;letter-spacing:.005em;margin:0;text-wrap:balance}
@@ -247,8 +247,23 @@ svg{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-lin
 .anteprima{background:#fff3c4;color:#5b4300;font:600 13.5px/1.4 Inter,sans-serif;text-align:center;padding:10px 16px;border-bottom:1px solid #e6d27a}
 
 /* promo */
-.promo{background:var(--espresso-2);color:var(--tan);font:500 13.5px/1.35 Inter,sans-serif;text-align:center;padding:10px 14px;border-bottom:2px dashed rgba(224,181,123,.32)}
-.promo b{display:block;color:#fff;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:3px}
+.promo{position:sticky;top:0;z-index:999;width:100%;background:linear-gradient(180deg,#2b1c12 0%,#1e130b 100%);border-bottom:1px solid rgba(224,181,123,.38);box-shadow:0 3px 16px rgba(18,12,7,.38);padding:8px 16px}
+.promo-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:10px 18px;flex-wrap:wrap;line-height:1.3}
+.promo-txt{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.promo-txt::before{content:"";flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--gold);animation:promoPulse 2.6s ease-out infinite}
+@keyframes promoPulse{0%{box-shadow:0 0 0 0 rgba(220,170,85,.65)}70%{box-shadow:0 0 0 9px rgba(220,170,85,0)}100%{box-shadow:0 0 0 0 rgba(220,170,85,0)}}
+.promo-time{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:500;color:rgba(247,240,227,.82)}
+.promo-clock{font-size:14px;font-weight:700;letter-spacing:.25px;line-height:1.2;color:#ffe082;background:rgba(0,0,0,.38);border:1px solid rgba(224,181,123,.45);border-radius:7px;padding:4px 10px;box-shadow:inset 0 1px 2px rgba(0,0,0,.35),0 1px 4px rgba(0,0,0,.25);white-space:nowrap}
+.promo-clock:empty{display:none}
+@media (max-width:560px){
+  .promo{padding:8px 12px}
+  .promo-in{gap:6px 10px}
+  .promo-txt{font-size:12px;letter-spacing:.06em}
+  .promo-time{font-size:12px}
+  .promo-clock{font-size:12.5px;padding:3px 8px}
+}
+@media (prefers-reduced-motion:reduce){.promo-txt::before{animation:none}}
+section[id]{scroll-margin-top:60px}
 
 /* hero */
 .hero{padding:26px 0 56px;overflow:hidden}
@@ -636,7 +651,7 @@ JS = r"""
   // fecha de hoy en la barra de la oferta (como en las otras landing)
   var el=document.getElementById('oggi');
   if(el){try{var s=new Date().toLocaleDateString('it-IT',{timeZone:'Europe/Rome',weekday:'long',day:'numeric',month:'long'});
-    el.textContent=s.replace(/(^\w|\s\w)/g,function(m){return m.toUpperCase();});}catch(e){}}
+    el.textContent=(s?s.replace(/(^\w|\s\w)/g,function(m){return m.toUpperCase();}):'Oggi');}catch(e){el.textContent='Oggi';}}
 
   // utm_* y click ids de la visita → links al checkout, para que la venta quede atribuida al anuncio
   function conParametri(h){try{var u=new URL(h,location.href);
@@ -969,7 +984,12 @@ def pagina_principale():
     <span class="sp-meta"><span class="ok">✔ Accesso confermato</span> · <span id="spTime">fa 4 minuti</span></span>
   </div>
 </div>
-<div class="promo" role="status"><b>Offerta di lancio</b> Valida fino a oggi, <span id="oggi"></span></div>
+<div class="promo" role="status" aria-live="off">
+  <div class="promo-in">
+    <span class="promo-txt">Offerta di lancio</span>
+    <span class="promo-time">Valida fino a oggi, <span class="promo-clock" id="oggi"></span></span>
+  </div>
+</div>
 
 <header class="hero cuoio">
   <div class="wrap hero-in">
