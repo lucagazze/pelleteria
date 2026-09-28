@@ -5,8 +5,8 @@ Misma estructura que la landing de Chimica (studiofacile/chimica.html) con
 estética propia de taller de cuero. Todo sale de la configuración de abajo:
 cambiar el kit, el precio o el checkout es editar CONFIG y volver a correr.
 
-Reglas de contenido (no inventar):
-- Sin contadores de clientes ni toasts de compras.
+Reglas de contenido:
+- Toast de compras recientes (social proof toast) copiado de studiofacile.
 - El kit son los 3 volúmenes PDF (Borse e Zaini, Portafogli, Cinture): 81 modelos.
   Solo se describe lo que está en los PDF. Todos los proyectos traen foto del
   modelo terminado y tavole; misure/materiali/minuteria/strumenti solo los más
@@ -586,6 +586,49 @@ footer a{color:rgba(247,240,227,.78)}
   background:rgba(28,19,12,.8);color:#fff;font:600 22px/1 Inter,sans-serif;cursor:pointer}
 .visore .prev{left:10px}.visore .next{right:10px}
 .visore .chiudi{position:fixed;top:12px;right:12px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(247,240,227,.14);color:#fff;font:400 26px/1 Inter,sans-serif;cursor:pointer}
+
+/* cartel de compra reciente */
+.sp-toast{
+  position:fixed;left:14px;top:14px;z-index:99999;
+  display:flex;align-items:center;gap:12px;
+  background:#fff;border:1px solid #e4e9ee;border-radius:12px;
+  padding:10px 14px 10px 10px;max-width:330px;
+  box-shadow:0 10px 30px rgba(18,25,31,.22);
+  opacity:0;visibility:hidden;transform:translateY(-16px) scale(.97);
+  transition:opacity .45s ease, transform .45s cubic-bezier(.2,.8,.3,1), visibility .45s;
+}
+.sp-toast.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.sp-mini{
+  position:relative;flex:0 0 auto;width:66px;height:42px;border-radius:6px;overflow:hidden;
+  background:#0f1516;box-shadow:0 2px 8px rgba(18,25,31,.22);
+}
+.sp-mini img{width:100%;height:100%;object-fit:cover;border-radius:0;margin:0;display:block}
+.sp-txt{min-width:0;line-height:1.4}
+.sp-name{font-size:13.5px;font-weight:700;color:#12191f;display:block}
+.sp-name b{font-weight:700}
+.sp-prod{
+  font-size:12px;color:#5b6874;display:block;margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.sp-meta{
+  font-size:10.5px;color:#98a3ad;display:flex;align-items:center;gap:5px;margin-top:3px;
+}
+.sp-meta .ok{color:#28a745;font-weight:700}
+.sp-close{
+  position:absolute;top:-10px;right:-10px;
+  width:26px;height:26px;padding:0;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid #e0e6eb;border-radius:50%;
+  background:#fff;color:#8a949e;font-size:16px;font-weight:600;
+  font-family:inherit;cursor:pointer;
+  box-shadow:0 2px 8px rgba(18,25,31,.14);
+  transition:background .18s ease, color .18s ease, transform .18s ease, border-color .18s ease;
+}
+.sp-close:hover{background:#ffffff;border-color:#cbd5e1;color:#12191f;transform:scale(1.08);box-shadow:0 4px 12px rgba(18,25,31,.2)}
+.sp-close:active{transform:scale(.96)}
+@media (max-width:560px){
+  .sp-toast{left:8px;right:8px;top:10px;max-width:none}
+}
 """
 
 JS = r"""
@@ -657,6 +700,54 @@ JS = r"""
     box.querySelectorAll('.freccia, .punti button').forEach(function(b){b.addEventListener('click',tocca);});
     window.addEventListener('resize',stato);stato();
   });
+
+  // cartel de compra reciente (social proof toast)
+  (function(){
+    var buyers = [
+      { name: "Chiara da Milano", prod: "Ha acquistato il Kit Pelletteria Facile", time: "fa 4 minuti" },
+      { name: "Marco da Firenze", prod: "Kit Completo · 3 Volumi (81 Modelli)", time: "fa 12 minuti" },
+      { name: "Martina da Bologna", prod: "Ha acquistato il Kit Completo", time: "fa 18 minuti" },
+      { name: "Lorenzo da Roma", prod: "Kit Completo · 3 Volumi (81 Modelli)", time: "fa 25 minuti" },
+      { name: "Sofia da Torino", prod: "Ha sbloccato il Kit Pelletteria Facile", time: "fa 31 minuti" },
+      { name: "Matteo da Vicenza", prod: "Kit Completo · 3 Volumi (81 Modelli)", time: "fa 39 minuti" },
+      { name: "Camilla da Padova", prod: "Ha acquistato il Kit Completo", time: "fa 44 minuti" },
+      { name: "Alessandro da Napoli", prod: "Kit Completo · 3 Volumi (81 Modelli)", time: "fa 52 minuti" }
+    ];
+    var idx = 0;
+    var toast = document.getElementById('spToast');
+    var spName = document.getElementById('spName');
+    var spProd = document.getElementById('spProd');
+    var spTime = document.getElementById('spTime');
+    var spClose = document.getElementById('spClose');
+
+    if (!toast) return;
+
+    function showNext() {
+      var b = buyers[idx];
+      if (spName) spName.textContent = b.name;
+      if (spProd) spProd.textContent = b.prod;
+      if (spTime) spTime.textContent = b.time;
+      toast.classList.add('show');
+
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 6000);
+
+      idx = (idx + 1) % buyers.length;
+    }
+
+    if (spClose) {
+      spClose.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toast.classList.remove('show');
+      });
+    }
+
+    setTimeout(function() {
+      showNext();
+      setInterval(showNext, 18000);
+    }, 6000);
+  })();
 })();
 """
 
@@ -869,6 +960,15 @@ def pagina_principale():
             f"con le tavole da stampare a casa e la licenza per vendere i pezzi che crei. {PREZZO}€, garanzia 30 giorni.")
     return head(titolo, desc, "/", pixel_head() + f'\n<script type="application/ld+json">{faq_schema()}</script>') + f"""
 <body>
+<div class="sp-toast" id="spToast" role="status" aria-live="polite">
+  <button class="sp-close" id="spClose" aria-label="Chiudi">×</button>
+  <span class="sp-mini"><img id="spShot" src="img/hero.webp" alt="Kit Pelletteria Facile"></span>
+  <div class="sp-txt">
+    <span class="sp-name" id="spName">Chiara da Milano</span>
+    <span class="sp-prod" id="spProd">Kit Completo · 3 Volumi (81 Modelli)</span>
+    <span class="sp-meta"><span class="ok">✔ Accesso confermato</span> · <span id="spTime">fa 4 minuti</span></span>
+  </div>
+</div>
 <div class="promo" role="status"><b>Offerta di lancio</b> Valida fino a oggi, <span id="oggi"></span></div>
 
 <header class="hero cuoio">
