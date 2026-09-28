@@ -1,0 +1,5 @@
+.vercel
+__pycache__/
+# portada vieja del kit de 10 modelos: ya no se usa
+img/copertina-kit.png
+img/copertina-kit-s.webp
