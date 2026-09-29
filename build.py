@@ -24,6 +24,7 @@ SITO = "https://pelletteria.studiofacilebook.com"
 PREZZO = "19,90"
 CHECKOUT = "https://pagamento.studiofacilebook.com/checkout/pelletteria-facile"   # Impultienda, dominio propio (28/09)
 PIXEL = "2855836794801494"   # pixel de Meta de Pelletteria Facile (28/09)
+CLARITY = "ypv295hl4t"   # Microsoft Clarity (29/09)
 EMAIL = "info@studiofacilebook.com"   # buzón de soporte (confirmar)
 SOCIETA = "QUILLSTONE DIGITAL LLC"
 INDIRIZZO = "1057 NW 136th Ave, Miami, FL 33182, Stati Uniti"
@@ -786,6 +787,16 @@ fbq('init','{PIXEL}');fbq('track','PageView');
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={PIXEL}&ev=PageView&noscript=1" alt=""></noscript>"""
 
 
+def clarity_head():
+    if not CLARITY:
+        return ""
+    return f"""<script type="text/javascript">
+(function(c,l,a,r,i,t,y){{c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};
+t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);}})(window,document,"clarity","script","{CLARITY}");
+</script>"""
+
+
 def head(title, desc, path, extra=""):
     robots = "noindex, nofollow" if ANTEPRIMA else "index, follow"
     return f"""<!DOCTYPE html>
@@ -812,6 +823,7 @@ def head(title, desc, path, extra=""):
 {FONTS}
 <style>{CSS}</style>
 {extra}
+{clarity_head()}
 </head>"""
 
 
@@ -1358,7 +1370,7 @@ LEGALI = {
 <li><strong>Misurare e migliorare il sito e le nostre pubblicità</strong> (consenso, dove richiesto).</li>
 <li><strong>Inviarti email sui nostri prodotti</strong>, da cui puoi disiscriverti in qualsiasi momento (legittimo interesse o consenso).</li></ul>
 <h2>4. Con chi condividiamo i dati</h2>
-<p>Non vendiamo i tuoi dati. Li condividiamo solo con i fornitori che ci aiutano a far funzionare il servizio: la piattaforma di checkout e il fornitore dei pagamenti, il servizio di invio delle email, Meta (Facebook/Instagram) per misurare le campagne pubblicitarie, e Vercel per l'hosting del sito.</p>
+<p>Non vendiamo i tuoi dati. Li condividiamo solo con i fornitori che ci aiutano a far funzionare il servizio: la piattaforma di checkout e il fornitore dei pagamenti, il servizio di invio delle email, Meta (Facebook/Instagram) per misurare le campagne pubblicitarie, Microsoft Clarity per capire come viene usato il sito (mappe di calore e registrazioni anonime delle sessioni), e Vercel per l'hosting del sito.</p>
 <p>Alcuni di questi fornitori si trovano negli Stati Uniti. I trasferimenti avvengono con le garanzie previste dal GDPR, come le Clausole Contrattuali Standard o il Data Privacy Framework UE-USA.</p>
 <h2>5. Per quanto tempo conserviamo i dati</h2>
 <p>I dati degli ordini sono conservati per il tempo richiesto dagli obblighi fiscali e contabili. I dati di navigazione e marketing sono conservati per il tempo necessario alle finalità indicate o fino alla revoca del consenso.</p>
