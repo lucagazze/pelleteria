@@ -40,7 +40,8 @@ SITO = "https://pelletteria.studiofacilebook.com"
 # La coma es la decimal italiana y asi se imprime en la pagina. Los usos
 # que necesitan un numero la convierten solos: float("17,99") para el
 # precio por modelo y value:17.99 para el evento del pixel.
-PREZZO = "17,99"
+# 19,90 € desde el 03/10/2026, pedido de Luca (antes 17,99).
+PREZZO = "19,90"
 CHECKOUT = "https://pagamento.studiofacilebook.com/checkout/pelletteria-facile"   # Impultienda, dominio propio (28/09)
 PIXEL = "2855836794801494"   # pixel de Meta de Pelletteria Facile (28/09)
 CLARITY = "ypv295hl4t"   # Microsoft Clarity (29/09)
