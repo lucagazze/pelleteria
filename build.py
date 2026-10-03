@@ -1324,7 +1324,7 @@ def footer():
   <div class="wrap">
     {marchio()}
     <p>© 2026 Pelletteria Facile · Tutti i diritti riservati</p>
-    <nav aria-label="Pagine legali"><a href="/rimborso">Politica di Rimborso</a><a href="/privacy">Privacy</a><a href="/termini">Termini</a><a href="/assistenza">Assistenza</a><a href="https://catalogo.studiofacilebook.com/" target="_blank" rel="noopener">Tutti i prodotti</a></nav>
+    <nav aria-label="Pagine legali"><a href="/rimborso">Politica di Rimborso</a><a href="/privacy">Privacy</a><a href="/termini">Termini</a><a href="/assistenza">Assistenza</a><a href="https://cartamodelli.studiofacilebook.com/" target="_blank" rel="noopener">Tutti i prodotti</a></nav>
     <p>{e(SOCIETA)} · {e(INDIRIZZO)}</p>
   </div>
 </footer>"""
@@ -1420,7 +1420,7 @@ LEGALI = {
 <h2>7. Responsabilità</h2>
 <p>Curiamo con attenzione i contenuti, ma non garantiamo che siano privi di errori o adatti a ogni situazione. Nei limiti consentiti dalla legge, non siamo responsabili per danni derivanti dall'uso del materiale. Restano salvi i diritti inderogabili del consumatore previsti dalla legge applicabile.</p>
 <h2>8. Contatti</h2>
-<p>Per qualsiasi domanda scrivi a <a href="mailto:{EMAIL}">{EMAIL}</a> oppure visita la pagina <a href="/assistenza">Assistenza</a><a href="https://catalogo.studiofacilebook.com/" target="_blank" rel="noopener">Tutti i prodotti</a>.</p>
+<p>Per qualsiasi domanda scrivi a <a href="mailto:{EMAIL}">{EMAIL}</a> oppure visita la pagina <a href="/assistenza">Assistenza</a><a href="https://cartamodelli.studiofacilebook.com/" target="_blank" rel="noopener">Tutti i prodotti</a>.</p>
 """),
 }
 
