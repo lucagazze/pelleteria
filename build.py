@@ -21,7 +21,26 @@ QUI = os.path.dirname(os.path.abspath(__file__))
 
 # ------------------------------------------------------------------ CONFIG
 SITO = "https://pelletteria.studiofacilebook.com"
-PREZZO = "19,90"
+# 17,00 desde el 02/10/2026, decision de Luca. Estaba en 19,90.
+#
+# EL NUMERO VIVE EN UN SOLO LUGAR y de aqui sale a las once partes de la
+# pagina donde aparece: los cuatro botones, el bloque de la oferta, el
+# resumen, el FAQ, el precio por modelo, el JSON-LD y el evento del
+# pixel. Cambiarlo a mano en el HTML dejaria alguno viejo, y el que se
+# queda viejo es siempre el que mira el comprador.
+#
+# TIENE QUE COINCIDIR CON EL CHECKOUT. El 02/10 la pagina decia 19,90 €
+# y el checkout cobraba US$ 27: un 25 % mas, en el momento de pagar. Si
+# el producto de Impultienda no se pasa a 17 €, este numero vuelve a
+# mentir — y ahora miente mas barato, que es peor, porque el comprador
+# descubre la diferencia recien con la tarjeta en la mano.
+# 17,99 € desde el 02/10/2026. Paso por 19,90 → 17 → 17,99 el mismo dia:
+# si vuelve a cambiar, se toca SOLO esta linea.
+#
+# La coma es la decimal italiana y asi se imprime en la pagina. Los usos
+# que necesitan un numero la convierten solos: float("17,99") para el
+# precio por modelo y value:17.99 para el evento del pixel.
+PREZZO = "17,99"
 CHECKOUT = "https://pagamento.studiofacilebook.com/checkout/pelletteria-facile"   # Impultienda, dominio propio (28/09)
 PIXEL = "2855836794801494"   # pixel de Meta de Pelletteria Facile (28/09)
 CLARITY = "ypv295hl4t"   # Microsoft Clarity (29/09)
@@ -1305,7 +1324,7 @@ def footer():
   <div class="wrap">
     {marchio()}
     <p>© 2026 Pelletteria Facile · Tutti i diritti riservati</p>
-    <nav aria-label="Pagine legali"><a href="/rimborso">Politica di Rimborso</a><a href="/privacy">Privacy</a><a href="/termini">Termini</a><a href="/assistenza">Assistenza</a></nav>
+    <nav aria-label="Pagine legali"><a href="/rimborso">Politica di Rimborso</a><a href="/privacy">Privacy</a><a href="/termini">Termini</a><a href="/assistenza">Assistenza</a><a href="https://catalogo.studiofacilebook.com/" target="_blank" rel="noopener">Tutti i prodotti</a></nav>
     <p>{e(SOCIETA)} · {e(INDIRIZZO)}</p>
   </div>
 </footer>"""
@@ -1401,7 +1420,7 @@ LEGALI = {
 <h2>7. Responsabilità</h2>
 <p>Curiamo con attenzione i contenuti, ma non garantiamo che siano privi di errori o adatti a ogni situazione. Nei limiti consentiti dalla legge, non siamo responsabili per danni derivanti dall'uso del materiale. Restano salvi i diritti inderogabili del consumatore previsti dalla legge applicabile.</p>
 <h2>8. Contatti</h2>
-<p>Per qualsiasi domanda scrivi a <a href="mailto:{EMAIL}">{EMAIL}</a> oppure visita la pagina <a href="/assistenza">Assistenza</a>.</p>
+<p>Per qualsiasi domanda scrivi a <a href="mailto:{EMAIL}">{EMAIL}</a> oppure visita la pagina <a href="/assistenza">Assistenza</a><a href="https://catalogo.studiofacilebook.com/" target="_blank" rel="noopener">Tutti i prodotti</a>.</p>
 """),
 }
 
