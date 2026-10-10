@@ -1,5 +1,36 @@
 {
   "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/cassa",
+      "destination": "https://checkout-propio-sepia.vercel.app/cassa"
+    },
+    {
+      "source": "/_next/:path*",
+      "destination": "https://checkout-propio-sepia.vercel.app/_next/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://checkout-propio-sepia.vercel.app/api/:path*"
+    },
+    {
+      "source": "/gracias",
+      "destination": "https://checkout-propio-sepia.vercel.app/gracias"
+    },
+    {
+      "source": "/oferta/:path*",
+      "destination": "https://checkout-propio-sepia.vercel.app/oferta/:path*"
+    },
+    {
+      "source": "/d/:path*",
+      "destination": "https://checkout-propio-sepia.vercel.app/d/:path*"
+    },
+    {
+      "source": "/t.js",
+      "destination": "https://checkout-propio-sepia.vercel.app/t.js"
+    }
+  ],
   "headers": [
     {
       "source": "/img/(.*)",

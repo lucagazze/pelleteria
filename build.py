@@ -42,7 +42,7 @@ SITO = "https://pelletteria.studiofacilebook.com"
 # precio por modelo y value:17.99 para el evento del pixel.
 # 19,90 € desde el 03/10/2026, pedido de Luca (antes 17,99).
 PREZZO = "19,90"
-CHECKOUT = "https://pagamento.studiofacilebook.com/checkout/pelletteria-facile"   # Impultienda, dominio propio (28/09)
+CHECKOUT = "https://pelletteria.studiofacilebook.com/cassa"   # checkout propio (app), rewrite en vercel.json (10/10). Antes Impultienda.
 PIXEL = "2855836794801494"   # pixel de Meta de Pelletteria Facile (28/09)
 CLARITY = "ypv295hl4t"   # Microsoft Clarity (29/09)
 EMAIL = "info@studiofacilebook.com"   # buzón de soporte (confirmar)
@@ -1460,8 +1460,14 @@ def scrivi(nome, testo):
 scrivi("index.html", versiona(pagina_principale()))
 for slug, (titolo, corpo) in LEGALI.items():
     scrivi(f"{slug}.html", pagina_legale(slug, titolo, corpo))
-scrivi("vercel.json", json.dumps({"cleanUrls": True, "headers": [
-    {"source": "/img/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800"}]}]}, indent=2) + "\n")
+# /cassa y lo que necesita el checkout propio (assets, api, gracias, post-pago, entrega, tracking) van a la app,
+# igual que studiofacile/phlebotomy/vercel.json con /checkout (10/10).
+APP = "https://checkout-propio-sepia.vercel.app"
+RISCRITTURE = ["/cassa", "/_next/:path*", "/api/:path*", "/gracias", "/oferta/:path*", "/d/:path*", "/t.js"]
+scrivi("vercel.json", json.dumps({"cleanUrls": True, "trailingSlash": False,
+    "rewrites": [{"source": r, "destination": APP + r} for r in RISCRITTURE],
+    "headers": [{"source": "/img/(.*)", "headers": [{"key": "Cache-Control", "value": "public, max-age=604800"}]}]},
+    indent=2) + "\n")
 scrivi("robots.txt", "User-agent: *\nDisallow: /\n" if ANTEPRIMA else f"User-agent: *\nAllow: /\nSitemap: {SITO}/sitemap.xml\n")
 scrivi("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
        + "".join(f"  <url><loc>{SITO}/{p}</loc></url>\n" for p in [""] + list(LEGALI)) + "</urlset>\n")
